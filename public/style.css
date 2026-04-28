@@ -1,0 +1,448 @@
+/*
+ * STYLE.CSS - Main Stylesheet
+ * ============================
+ * This file contains all CSS styles for the application.
+ * 
+ * STRUCTURE:
+ * - Global styles and resets
+ * - Navbar styles
+ * - Page layout and typography
+ * - Card components
+ * - Form elements
+ * - Buttons
+ * - Product/User grid
+ * - Toast notifications
+ * - Modal dialogs
+ * - Loading states
+ * - Responsive design
+ * 
+ * INTEGRATION:
+ * - Imported by all HTML pages via <link rel="stylesheet" href="css/style.css"/>
+ * - Uses Nunito font from Google Fonts
+ * - Works with JavaScript in helper.js for interactive components
+ */
+
+/* Import Nunito font from Google Fonts for modern, clean typography */
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap');
+
+/*
+ * GLOBAL RESET AND BASE STYLES
+ * Remove default browser spacing and set consistent box-sizing
+ */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Include padding and border in element width/height */
+}
+
+/*
+ * BODY STYLES
+ * Sets default font, background color, and minimum height
+ */
+body {
+  font-family: 'Nunito', sans-serif;
+  background: #f0f4f8; /* Light gray background */
+  color: #1a202c; /* Dark text color */
+  min-height: 100vh; /* Ensure body fills viewport height */
+}
+
+/*
+ * NAVIGATION BAR
+ * Fixed-height top navigation with logo and links
+ * Used by all pages for consistent navigation
+ */
+.navbar {
+  background: #1a202c; /* Dark background */
+  padding: 0 32px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo/brand text in navbar */
+.navbar-logo {
+  color: #fff;
+  font-size: 1.1rem;
+  font-weight: 800;
+  text-decoration: none;
+  letter-spacing: -0.5px;
+}
+
+/* Green accent color for "API" part of logo */
+.navbar-logo span { color: #68d391; }
+
+/* Container for navigation links */
+.navbar-links { display: flex; gap: 6px; }
+
+/* Individual navigation links */
+.navbar-links a {
+  color: rgba(255,255,255,0.6); /* Semi-transparent white */
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 6px 14px;
+  border-radius: 6px;
+  transition: all 0.2s; /* Smooth hover effect */
+}
+
+/* Hover state for nav links */
+.navbar-links a:hover { color: #fff; background: rgba(255,255,255,0.1); }
+
+/* Active/current page link - highlighted in green */
+.navbar-links a.active { color: #68d391; }
+
+/*
+ * PAGE LAYOUT
+ * Centers content with max-width and padding
+ */
+.page {
+  max-width: 860px;
+  margin: 0 auto; /* Center horizontally */
+  padding: 40px 20px 80px;
+}
+
+/*
+ * PAGE TITLE AND SUBTITLE
+ * Large heading and descriptive text at top of pages
+ */
+.page-title {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+  letter-spacing: -0.5px; /* Tighter letter spacing for modern look */
+}
+
+.page-sub {
+  color: #718096; /* Gray text */
+  font-size: 0.875rem;
+  margin-bottom: 28px;
+}
+
+/*
+ * CARD COMPONENT
+ * White container with rounded corners and shadow
+ * Used for grouping related content
+ */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07); /* Subtle shadow */
+}
+
+/* Card title/heading */
+.card-title {
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/*
+ * FORM ELEMENTS
+ * Styles for inputs, textareas, selects, and form layout
+ */
+
+/* Two-column form layout (stacks on mobile) */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* Stack form fields on small screens */
+@media (max-width: 520px) { .form-row { grid-template-columns: 1fr; } }
+
+/* Individual form field container */
+.form-group {
+  display: flex;
+  flex-direction: column; /* Label above input */
+  gap: 5px;
+}
+
+/* Full-width form field (spans both columns) */
+.form-group.full { grid-column: 1 / -1; }
+
+/* Form labels */
+label {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #4a5568; /* Medium gray */
+}
+
+/* Text inputs, textareas, and select dropdowns */
+input, textarea, select {
+  border: 1.5px solid #e2e8f0; /* Light gray border */
+  border-radius: 8px;
+  padding: 9px 13px;
+  font-family: 'Nunito', sans-serif; /* Match body font */
+  font-size: 0.9rem;
+  color: #1a202c;
+  background: #f7fafc; /* Very light gray background */
+  outline: none; /* Remove default browser outline */
+  transition: border-color 0.2s, box-shadow 0.2s; /* Smooth focus effect */
+  width: 100%;
+}
+
+/* Focus state for inputs - blue border and glow */
+input:focus, textarea:focus, select:focus {
+  border-color: #4299e1; /* Blue border */
+  background: #fff; /* White background when focused */
+  box-shadow: 0 0 0 3px rgba(66,153,225,0.15); /* Blue glow */
+}
+
+/* Textarea specific styles */
+textarea { resize: vertical; min-height: 72px; }
+
+/*
+ * BUTTONS
+ * Reusable button styles with color variants
+ * Used throughout the app for actions
+ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s; /* Smooth hover animation */
+  text-decoration: none; /* For button links */
+}
+
+/* Button color variants */
+.btn-blue   { background: #4299e1; color: #fff; }
+.btn-blue:hover   { background: #3182ce; transform: translateY(-1px); } /* Lift on hover */
+
+.btn-green  { background: #48bb78; color: #fff; }
+.btn-green:hover  { background: #38a169; transform: translateY(-1px); }
+
+.btn-red    { background: #fc8181; color: #fff; }
+.btn-red:hover    { background: #f56565; transform: translateY(-1px); }
+
+.btn-gray   { background: #edf2f7; color: #4a5568; }
+.btn-gray:hover   { background: #e2e8f0; }
+
+/* Small button variant */
+.btn-sm { padding: 6px 13px; font-size: 0.8rem; }
+
+/* Disabled button state */
+.btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+
+/*
+ * PRODUCT/USER GRID
+ * Responsive grid layout for displaying cards
+ * Automatically adjusts columns based on screen width
+ */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); /* Auto-fit columns */
+  gap: 14px;
+  margin-top: 16px;
+}
+
+/* Individual product/user card */
+.product-card {
+  background: #f7fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 16px;
+  transition: box-shadow 0.2s; /* Smooth shadow on hover */
+  animation: popIn 0.25s ease both; /* Fade in animation */
+}
+
+/* Lift card on hover */
+.product-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+
+/* Pop-in animation for cards when they appear */
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Card content styles */
+.product-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin-bottom: 4px;
+  text-transform: capitalize;
+}
+
+.product-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: #2f855a; /* Green for price */
+  margin-bottom: 6px;
+}
+
+/* Category badge */
+.product-category {
+  display: inline-block;
+  background: #ebf8ff; /* Light blue background */
+  color: #2b6cb0; /* Dark blue text */
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 9px;
+  border-radius: 20px; /* Pill shape */
+  text-transform: capitalize;
+  margin-bottom: 12px;
+}
+
+/* Action buttons container */
+.product-actions { display: flex; gap: 6px; }
+
+/*
+ * TOAST NOTIFICATIONS
+ * Temporary messages that appear at bottom-right of screen
+ * Used by showToast() function in helper.js
+ */
+.toast-wrap {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column; /* Stack multiple toasts */
+  gap: 8px;
+  z-index: 999; /* Appear above everything */
+}
+
+/* Individual toast message */
+.toast {
+  background: #1a202c; /* Dark background */
+  color: #fff;
+  padding: 11px 18px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  animation: slideUp 0.25s ease; /* Slide up animation */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 300px;
+}
+
+/* Success toast - green accent */
+.toast.success { border-left: 4px solid #68d391; }
+
+/* Error toast - red accent */
+.toast.error   { border-left: 4px solid #fc8181; }
+
+/* Slide up animation for toasts */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/*
+ * MODAL DIALOGS
+ * Overlay dialogs for editing, confirmations, etc.
+ * Controlled by openModal() and closeModal() in helper.js
+ */
+
+/* Full-screen overlay backdrop */
+.modal-overlay {
+  display: none; /* Hidden by default */
+  position: fixed;
+  inset: 0; /* Cover entire screen */
+  background: rgba(0,0,0,0.45); /* Semi-transparent black */
+  z-index: 200; /* Above other content */
+  align-items: center;
+  justify-content: center;
+}
+
+/* Show modal when 'open' class is added */
+.modal-overlay.open { display: flex; }
+
+/* Modal content box */
+.modal {
+  background: #fff;
+  border-radius: 14px;
+  padding: 28px;
+  width: 90%;
+  max-width: 460px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2); /* Large shadow */
+  animation: modalIn 0.2s ease; /* Scale in animation */
+}
+
+/* Scale in animation for modal */
+@keyframes modalIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* Modal title */
+.modal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  margin-bottom: 18px;
+}
+
+/* Modal action buttons container */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end; /* Align buttons to right */
+  margin-top: 20px;
+}
+
+/*
+ * LOADING STATES
+ * Spinner and empty state displays
+ */
+
+/* Loading indicator with spinner */
+.loader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #718096; /* Gray text */
+  font-size: 0.875rem;
+  padding: 12px 0;
+}
+
+/* Spinning circle animation */
+.spinner {
+  width: 16px; height: 16px;
+  border: 2px solid #e2e8f0; /* Light gray border */
+  border-top-color: #4299e1; /* Blue top for spinning effect */
+  border-radius: 50%; /* Make it circular */
+  animation: spin 0.6s linear infinite; /* Continuous rotation */
+  display: inline-block;
+}
+
+/* Rotation animation */
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Empty state message (no data to display) */
+.empty-state {
+  text-align: center;
+  padding: 32px;
+  color: #a0aec0; /* Light gray */
+  font-size: 0.9rem;
+}
+
+/* Large emoji/icon in empty state */
+.empty-state div { font-size: 2rem; margin-bottom: 8px; }
+
+/*
+ * FOOTER
+ * Simple centered footer text
+ */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #a0aec0; /* Light gray */
+  font-size: 0.78rem;
+}

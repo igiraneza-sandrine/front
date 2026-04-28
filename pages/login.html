@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login — ShopAPI</title>
+  
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  
+  <style>
+    :root {
+      --primary: #4f46e5;
+      --primary-hover: #4338ca;
+      --bg-gradient: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --error-bg: #fef2f2;
+      --error-text: #b91c1c;
+    }
+
+    * {
+      box-sizing: border-box;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      margin: 0;
+      background: var(--bg-gradient);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    /* Background decorative elements */
+    .bg-blob {
+      position: absolute;
+      width: 300px;
+      height: 300px;
+      background: rgba(79, 70, 229, 0.1);
+      filter: blur(80px);
+      border-radius: 50%;
+      z-index: -1;
+    }
+
+    .auth-box {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      border-radius: 24px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+    }
+
+    .auth-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .auth-logo {
+      font-size: 1.75rem;
+      font-weight: 800;
+      letter-spacing: -1px;
+      color: var(--text-main);
+      margin-bottom: 8px;
+    }
+
+    .auth-logo span { color: var(--primary); }
+
+    .auth-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin: 0;
+    }
+
+    /* Input Styling */
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 8px;
+      text-transform: capitalize;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    .input-wrapper i {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+      width: 18px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px 12px 42px;
+      background: #fcfdfe;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      font-size: 1rem;
+      color: var(--text-main);
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .form-group input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+      background: #fff;
+    }
+
+    /* Buttons & Links */
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .btn-login:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);
+    }
+
+    .btn-login:active { transform: translateY(0); }
+
+    .auth-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .auth-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .auth-footer a:hover { text-decoration: underline; }
+
+    /* Messages */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 0.875rem;
+      margin-bottom: 20px;
+      display: none;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .alert-error {
+      background: var(--error-bg);
+      color: var(--error-text);
+      border: 1px solid rgba(185, 28, 28, 0.1);
+    }
+
+    .alert-success {
+      background: #f0fdf4;
+      color: #166534;
+      border: 1px solid rgba(22, 101, 52, 0.1);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin: 24px 0;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .divider:not(:empty)::before { margin-right: 1em; }
+    .divider:not(:empty)::after { margin-left: 1em; }
+
+  </style>
+</head>
+<body>
+
+  <div class="bg-blob" style="top: 10%; left: 15%;"></div>
+  <div class="bg-blob" style="bottom: 10%; right: 15%; background: rgba(16, 185, 129, 0.1);"></div>
+
+  <div class="auth-box">
+    <div class="auth-header">
+      <div class="auth-logo">Shop<span>API</span></div>
+      <p class="auth-subtitle">Welcome back! Please sign in.</p>
+    </div>
+
+    <div class="alert alert-success" id="login-success">
+      <i data-lucide="check-circle" size="18"></i>
+      Account created! You can now log in.
+    </div>
+
+    <div class="alert alert-error" id="login-error">
+      <i data-lucide="alert-circle" size="18"></i>
+      <span id="error-text"></span>
+    </div>
+
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <div class="input-wrapper">
+        <i data-lucide="mail"></i>
+        <input type="text" id="email" placeholder="Enter your email" autocomplete="email"/>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password">Password</label>
+      <div class="input-wrapper">
+        <i data-lucide="lock"></i>
+        <input type="password" id="password" placeholder="••••••••" 
+          onkeydown="if(event.key==='Enter') handleLogin()"/>
+      </div>
+    </div>
+
+    <button class="btn-login" id="btn-login" onclick="handleLogin()">
+      <span>Sign In</span>
+      <i data-lucide="arrow-right" size="18"></i>
+    </button>
+
+    <div class="divider">or</div>
+
+    <div class="auth-footer">
+      New to ShopAPI? <a href="register.html">Create an account</a>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+  <script>
+    // Initialize Icons
+    lucide.createIcons();
+
+    // Prevent logged-in users from seeing this page
+    requireGuest();
+
+    /**
+     * Enhanced Login Handler
+     * Adds a loading state to the button for better UX
+     */
+    async function handleLogin() {
+      const btn = document.getElementById('btn-login');
+      const email = document.getElementById('email').value;
+      const pass = document.getElementById('password').value;
+
+      if (!email || !pass) {
+        showError("Please fill in all fields.");
+        return;
+      }
+
+      // Add loading state
+      const originalContent = btn.innerHTML;
+      btn.disabled = true;
+      btn.innerHTML = `<span style="opacity: 0.7">Authenticating...</span>`;
+
+      try {
+        // Calls the existing login() function from your auth.js
+        await login(); 
+      } catch (err) {
+        showError("Invalid credentials. Please try again.");
+        btn.disabled = false;
+        btn.innerHTML = originalContent;
+        lucide.createIcons();
+      }
+    }
+
+    function showError(msg) {
+      const errBox = document.getElementById('login-error');
+      document.getElementById('error-text').innerText = msg;
+      errBox.style.display = 'flex';
+      
+      // Auto-hide after 5 seconds
+      setTimeout(() => { errBox.style.display = 'none'; }, 5000);
+    }
+
+    // Check for "registered=1" in URL to show success message
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('registered')) {
+      document.getElementById('login-success').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Users App</title>
+  <!-- Link to main stylesheet for consistent styling across all pages -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <!-- 
+    INDEX.HTML - Main Landing Page
+    ================================
+    This is the home page of the application. It displays a list of all users.
+    
+    INTEGRATION:
+    - Uses auth.js for authentication (requireLogin function)
+    - Uses api.js for fetching user data from backend
+    - Uses helper.js for UI utilities (modals, toasts)
+    - Links to login.html if user is not authenticated
+    
+    FLOW:
+    1. Page loads and calls requireLogin() to check authentication
+    2. If not logged in, redirects to pages/login.html
+    3. If logged in, displays user list (currently shows loading state)
+    4. Navigation bar shows current user and logout option
+  -->
+
+  <!-- 
+    NAVIGATION BAR
+    - Shows app logo and main navigation links
+    - nav-user-area div is populated by updateNavbar() function from auth.js
+    - Displays logged-in user info and logout button when authenticated
+  -->
+  <nav class="navbar">
+    <a class="navbar-logo" href="index.html">User<span>API</span></a>
+    <div class="navbar-links">
+      <a href="index.html">All Users</a>
+      <a href="pages/add.html">+ Add User</a>
+      <!-- This div is dynamically filled by auth.js updateNavbar() function -->
+      <div id="nav-user-area" style="display:flex;align-items:center;gap:8px;margin-left:8px;"></div>
+    </div>
+  </nav>
+
+  <!-- 
+    MAIN CONTENT AREA
+    - Displays page title and description
+    - product-grid div will be populated with user cards via JavaScript
+    - Shows loading spinner until data is fetched from API
+  -->
+  <main class="page">
+    <h1 class="page-title">All Users</h1>
+    <p class="page-sub">Fetched live from API · click Edit or Delete on any card</p>
+
+    <div class="card">
+      <div class="card-title">User List</div>
+      <!-- This div will contain user cards populated by JavaScript -->
+      <div id="product-grid">
+        <div class="loader"><span class="spinner"></span> Loading...</div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 
+    EDIT MODAL
+    - Hidden by default (shown when user clicks Edit button on a user card)
+    - Contains form fields for editing user information
+    - closeModal() function from helper.js hides the modal
+    - submitEdit() function would send updated data to API (needs implementation)
+    - edit-id hidden field stores the user ID being edited
+  -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <div class="modal-title"> Edit User</div>
+      <!-- Hidden field to store user ID during edit -->
+      <input type="hidden" id="edit-id"/>
+      <div class="form-row">
+        <div class="form-group full">
+          <label>Full Name</label>
+          <input type="text" id="edit-name" placeholder="User name"/>
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="edit-email" placeholder="User email"/>
+        </div>
+        <div class="form-group">
+          <label></label>
+          <input type="text" id="edit-category" placeholder="e.g. electronics"/>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <!-- Cancel button closes modal without saving -->
+        <button class="btn btn-gray" onclick="closeModal('edit-modal')">Cancel</button>
+        <!-- Save button triggers submitEdit() to update user data -->
+        <button class="btn btn-green" id="btn-save-edit" onclick="submitEdit()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <footer>users-app · index.html · uses js/api.js + js/users.js</footer>
+
+  <!-- 
+    JAVASCRIPT FILES - Load order is important!
+    1. auth.js - Must load first (provides authentication functions)
+    2. api.js - Provides API communication functions
+    3. helpers.js - Provides UI utility functions (modals, toasts)
+    
+    After scripts load, requireLogin() checks if user is authenticated.
+    If not authenticated, user is redirected to login page.
+  -->
+  <script src="js/auth.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/helpers.js"></script>
+  <script>
+    // Check authentication status when page loads
+    // Redirects to login page if no valid token found
+    requireLogin();
+  </script>
+</body>
+</html>
